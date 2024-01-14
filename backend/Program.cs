@@ -1,6 +1,7 @@
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using DoorbellBackend.Models;
+using DoorbellBackend.ImageHelper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,16 +40,29 @@ app.MapGet("/detections", async (DoorbellDb db, int page, int pageSize = 10) =>
         .Take(pageSize)
         .ToListAsync();
 
+    // convert local path to base64
+    foreach (var detection in detections)
+    {
+        detection.Image = ImageHelper.ConvertToBase64(detection.Image);
+    }
+
     return Results.Ok(detections);
 });
 
 app.MapGet("/detection/{id}", async (DoorbellDb db, int id) => await db.Detections.FindAsync(id));
+
 app.MapPost("/detection", async (DoorbellDb db, Detection detection) =>
 {
+    if (detection.Image is null) return Results.BadRequest("No image found.");
+
+    // convert base64 string to image and store locally, storing relative path in db
+    detection.Image = ImageHelper.SaveImageLocally(detection.Image, detection.Name, detection.Date);
+
     await db.Detections.AddAsync(detection);
     await db.SaveChangesAsync();
-    return Results.Created($"/detection/{detection.Id}", detection);
+    return Results.Created($"/detection/{detection.Date}_{detection.Name}.jpg", detection);
 });
+/*
 app.MapPut("/detection/{id}", async (DoorbellDb db, Detection updateDetection, int id) =>
 {
     var detection = await db.Detections.FindAsync(id);
@@ -59,7 +73,8 @@ app.MapPut("/detection/{id}", async (DoorbellDb db, Detection updateDetection, i
     detection.Image = updateDetection.Image;
     await db.SaveChangesAsync();
     return Results.NoContent();
-});
+}); */
+
 app.MapDelete("/detection/{id}", async (DoorbellDb db, int id) =>
 {
     var detection = await db.Detections.FindAsync(id);

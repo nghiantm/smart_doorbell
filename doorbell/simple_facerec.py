@@ -50,7 +50,7 @@ class SimpleFacerec:
         face_names = []
         for face_encoding in face_encodings:
             # Check if the face is a match to known faces
-            matches = face_recognition.compare_faces(self.known_face_encodings, face_encoding, 0.5)
+            matches = face_recognition.compare_faces(self.known_face_encodings, face_encoding, 0.4)
             name = "Unknown"
 
             # Use the known face with the smallest distance to the new face
