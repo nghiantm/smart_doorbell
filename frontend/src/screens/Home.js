@@ -10,14 +10,6 @@ const Home = () => {
     const detections = useSelector((state) => state.detection.detections);
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        axios
-            .get('http://localhost:5214/detections?page=1&pageSize=10')
-            .then((res) => {
-                dispatch(addDetections(res.data))
-            })
-    }, [])
-
     return (
         <View style={styles.flashView}>
             <FlatList 
