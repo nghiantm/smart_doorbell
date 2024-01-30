@@ -62,7 +62,6 @@ app.MapPost("/detection", async (DoorbellDb db, Detection detection) =>
     await db.SaveChangesAsync();
     return Results.Created($"/detection/{detection.Date}_{detection.Name}.jpg", detection);
 });
-/*
 app.MapPut("/detection/{id}", async (DoorbellDb db, Detection updateDetection, int id) =>
 {
     var detection = await db.Detections.FindAsync(id);
@@ -73,7 +72,7 @@ app.MapPut("/detection/{id}", async (DoorbellDb db, Detection updateDetection, i
     detection.Image = updateDetection.Image;
     await db.SaveChangesAsync();
     return Results.NoContent();
-}); */
+}); 
 
 app.MapDelete("/detection/{id}", async (DoorbellDb db, int id) =>
 {
