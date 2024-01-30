@@ -21,7 +21,7 @@ def resize_and_compress_image(input_image_path, target_width, target_height, com
 
 # Example usage:
 #input_image_path = 'doorbell/temp_images/file.jpg'
-#output_image_path = 'file_resized40_2.jpg'
+#output_image_path = 'file_resized40_1920_1080.jpg'
 #target_width = 1920
 #target_height = 1080
 #compression_quality = 40  # Adjust as needed (0 to 100, higher means better quality)
