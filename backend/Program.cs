@@ -15,7 +15,7 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo
     {
         Title = "Doorbell API",
-        Description = "Connect Doorbell to frontend",
+        Description = "Backend for camera script and frontend web",
         Version = "v1"
     });
 });
@@ -72,7 +72,7 @@ app.MapPut("/detection/{id}", async (DoorbellDb db, Detection updateDetection, i
     detection.Image = updateDetection.Image;
     await db.SaveChangesAsync();
     return Results.NoContent();
-}); 
+});
 
 app.MapDelete("/detection/{id}", async (DoorbellDb db, int id) =>
 {
